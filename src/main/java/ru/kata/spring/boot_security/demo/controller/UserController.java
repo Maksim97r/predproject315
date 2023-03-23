@@ -11,12 +11,19 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 @Controller
 @RequestMapping("/")
 public class UserController {
-    private final UserService userService;
+
+    private final ru.kata.spring.boot_security.demo.dao.UserService userService;
+//    private final UserService userService;
 
     @Autowired
-    UserController(UserService userService) {
+    UserController(ru.kata.spring.boot_security.demo.dao.UserService userService) {
         this.userService = userService;
     }
+
+//    @Autowired
+//    UserController(UserService userService) {
+//        this.userService = userService;
+//    }
 
     @GetMapping
     public String findAll(Model model) {
@@ -38,7 +45,7 @@ public class UserController {
 
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+        userService.deleteUserById(id);
         return "redirect:/";
     }
 

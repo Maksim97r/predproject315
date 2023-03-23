@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.dao;
 
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,15 +13,16 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
-import javax.persistence.Access;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserSevice implements UserDetailsService {
+public class UserService implements UserDetailsService {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -39,6 +39,11 @@ public class UserSevice implements UserDetailsService {
         return userRepository.findByName(username);
     }
 
+    public User getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(new User());
+    }
+
     public boolean saveUser(User user) {
         User userFromDB = userRepository.findByName(user.getUsername());
 
@@ -46,11 +51,30 @@ public class UserSevice implements UserDetailsService {
             return false;
         }
 
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
+
+    public boolean deleteUserById(Long id) {
+        if (userRepository.findById(id).isPresent()) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public void updateUser(User user) {
+        entityManager.merge(user);
+        entityManager.flush();
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+
+    }
+
 
 
 
