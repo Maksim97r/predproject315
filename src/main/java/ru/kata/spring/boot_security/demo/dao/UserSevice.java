@@ -1,11 +1,13 @@
 package ru.kata.spring.boot_security.demo.dao;
 
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -16,12 +18,15 @@ import javax.persistence.Access;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Service
 public class UserSevice implements UserDetailsService {
     @PersistenceContext
     private EntityManager entityManager;
+
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private UserRepository userRepository;
 
@@ -32,6 +37,19 @@ public class UserSevice implements UserDetailsService {
 
     public User findByName(String username) {
         return userRepository.findByName(username);
+    }
+
+    public boolean saveUser(User user) {
+        User userFromDB = userRepository.findByName(user.getUsername());
+
+        if (userFromDB != null) {
+            return false;
+        }
+
+        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return true;
     }
 
 
