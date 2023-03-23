@@ -5,18 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
 
 
 @Controller
 @RequestMapping("/")
 public class UserController {
 
-    private final ru.kata.spring.boot_security.demo.dao.UserService userService;
+    private final ru.kata.spring.boot_security.demo.service.UserService userService;
 //    private final UserService userService;
 
     @Autowired
-    UserController(ru.kata.spring.boot_security.demo.dao.UserService userService) {
+    UserController(ru.kata.spring.boot_security.demo.service.UserService userService) {
         this.userService = userService;
     }
 
