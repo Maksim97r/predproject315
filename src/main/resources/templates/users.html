@@ -15,10 +15,10 @@
           <td th:text="${user.getName()}"></td>
           <td th:text="${user.getLastName()}"></td>
           <td th:text="${user.getAge()}"></td>
-          <td><a th:text="Edit" th:href="@{updateUser/{userId}(userId=${user.getId()})}"></a>&nbsp;|&nbsp;<a th:text="Delete" th:href="@{deleteUser/{userId}(userId=${user.getId()})}"></a>
+          <td><a th:text="Edit" th:href="@{admin/updateUser/{userId}(userId=${user.getId()})}"></a>&nbsp;|&nbsp;<a th:text="Delete" th:href="@{admin/deleteUser/{userId}(userId=${user.getId()})}"></a>
           </td></tr>
       </th:block>
     </table><br><br>
-    <a th:href="user-create"><input type="button" id="addB" value="Add new user"></a>
+    <a th:href="@{admin/user-create}"><input type="button" id="addB" value="Add new user"></a>
   </body>
 </html>

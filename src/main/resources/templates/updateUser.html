@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Edit user</h1><br>
-<form th:method="post" th:action="@{/updateUser/{userId}(userId=${update.getId()})}" th:object="${update}" >
+<form th:method="post" th:action="@{/admin/updateUser/{userId}(userId=${update.getId()})}" th:object="${update}" >
     <table>
         <tr><td>Name</td><td><input th:type="text" th:field="*{name}" required th:value="${update.getName()}" class="data"></td></tr>
         <tr><td>Last name</td><td> <input th:type="text" th:field="*{lastName}" required th:value="${update.getLastName()}" class="data"></td></tr>
