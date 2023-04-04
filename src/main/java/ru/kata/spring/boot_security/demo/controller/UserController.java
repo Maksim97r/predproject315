@@ -29,12 +29,4 @@ public class UserController {
         model.addAttribute("user", user);
         return "user";
     }
-
-
-
-//    @GetMapping()
-//    public String pageForUserAuthentication(@AuthenticationPrincipal User user, Model model) {
-//        model.addAttribute("user", user);
-//        return "user";
-//    }
 }

@@ -25,8 +25,6 @@ public class UserService implements UserDetailsService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private UserRepository userRepository;
 
     @Autowired
@@ -48,10 +46,7 @@ public class UserService implements UserDetailsService {
 
         if (userFromDB != null) {
             return false;
-        }
-
-//        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        };
         userRepository.save(user);
         return true;
     }
