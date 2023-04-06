@@ -5,6 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
@@ -14,28 +17,40 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
-    private String name;
-    @Column
+
+    @Column(name = "username")
+    @NotEmpty(message = "Name cannot be empty!")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 character")
+    private String firstName;
+
+    @Column(name = "lastName")
+    @NotEmpty(message = "Lastname cannot be empty!")
+    @Size(min = 2, max = 30, message = "Lastname should be between 2 and 30 character")
     private String lastName;
-    @Column
+
+    @Column(name = "age")
     private int age;
 
-    @Column
+    @Column(name = "email")
+    @NotEmpty(message = "Email cannot be empty!")
+    @Email(message = "Email should be valid!")
+    private String email;
+
+    @Column(name = "password")
     private String password;
 
     public User() {
     }
 
-    public User(String name, String lastName, int age) {
-        this.name = name;
+    public User(String firstName, String lastName, int age) {
+        this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
     }
 
-    public User(Long id, String name, String lastName, int age, String password) {
+    public User(Long id, String firstName, String lastName, int age, String password) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.password = password;
@@ -54,12 +69,12 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -86,6 +101,14 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Collection<Role> getRoles() {
         return roles;
     }
@@ -94,13 +117,17 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 
@@ -111,7 +138,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return firstName;
     }
 
     @Override

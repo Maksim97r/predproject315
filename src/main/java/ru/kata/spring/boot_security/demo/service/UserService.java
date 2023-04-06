@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -33,7 +32,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User findByName(String username) {
-        return userRepository.findByName(username);
+        return userRepository.findByFirstName(username);
     }
 
     public User getUserById(Long id) {
@@ -42,7 +41,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByName(user.getUsername());
+        User userFromDB = userRepository.findByFirstName(user.getUsername());
 
         if (userFromDB != null) {
             return false;
@@ -81,7 +80,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getFirstName(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
