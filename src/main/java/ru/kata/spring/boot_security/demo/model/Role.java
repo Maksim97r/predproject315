@@ -38,6 +38,14 @@ public class Role implements GrantedAuthority {
         Id = id;
     }
 
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
     public String getRoleName() {
         return roleName;
     }
