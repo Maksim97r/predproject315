@@ -47,19 +47,19 @@
     <div class="col-2">
         <div th:each="authority : ${#authentication.authorities}">
             <div th:if="${authority.getAuthority().contains('ROLE_ADMIN')}">
-            <div class="list-group">
-                <a class="list-group-item" aria-current="true" th:href="@{/admin}">Admin</a>
-                <a class="list-group-item active" aria-current="true" th:href="@{/user}">User</a>
-            </div>
+                <div class="list-group">
+                    <a class="list-group-item" aria-current="true" th:href="@{/admin}">Admin</a>
+                    <a class="list-group-item active" aria-current="true" th:href="@{/user}">User</a>
+                </div>
             </div>
             <div th:if="${authority.authority.contains('ROLE_USER')}">
-            <div class="list-group">
-                <a class="list-group-item active" aria-current="true" th:href="@{/user}">User</a>
+                <div class="list-group">
+                    <a class="list-group-item active" aria-current="true" th:href="@{/user}">User</a>
+                </div>
             </div>
-            </div>
-<!--        <div th:each="authority : ${#authentication.authorities}" th:unless=""-->
         </div>
     </div>
+
 
 
 <!--Таблица с информацией о пользователе-->
