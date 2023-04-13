@@ -22,9 +22,7 @@
             <div th:object="${user}" class="col-sm text-light bg-dark">
                <b><span th:text="${user.email}"></span></b>
                 <span>with roles:</span>
-                <span th:each="authority : ${#authentication.getAuthorities()}"
-                    th:if="${authority.getAuthority().startsWith('ROLE_')}"
-                    th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}">
+                <span th:text="${user.allRoles}">
                 </span>
             </div>
 
@@ -84,9 +82,7 @@
                             <td th:text="${user.lastName}"></td>
                             <td th:text="${user.age}"></td>
                             <td th:text="${user.email}"></td>
-                            <td th:each="authority : ${#authentication.getAuthorities()}"
-                                th:if="${authority.getAuthority().startsWith('ROLE_')}"
-                                th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}">
+                            <td th:text="${user.allRoles}">
                             </td>
                 </block>
             </tbody>

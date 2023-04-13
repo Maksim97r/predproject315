@@ -12,6 +12,7 @@
     <title>Users</title>
   </head>
   <body>
+
   <!-- Навигационная панель -->
   <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -19,13 +20,11 @@
         <div th:object="${admin}" class="col-sm text-light bg-dark">
           <b><span th:text="${admin.email}"></span></b>
           <span>with roles:</span>
-          <span th:each="authority : ${#authentication.getAuthorities()}"
-                th:if="${authority.getAuthority().startsWith('ROLE_')}"
-                th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}">
+          <span th:text="${admin.allRoles}">
                 </span>
         </div>
 
-
+<!--Кнопка Logout-->
         <div>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
@@ -61,15 +60,15 @@
 
 <!--    Навигация-->
     <div class="col">
-      <h1>User information-page!</h1>
-    <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link disabled" aria-current="page" href="#">User table</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/admin/user-create}">New user</a>
-      </li>
-    </ul>
+      <h1>Admin panel</h1>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">User table</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">New User</a>
+        </li>
+      </ul>
 
 <!--    Таблица пользователей-->
       <p><h5>All users</h5></p>
@@ -86,34 +85,140 @@
             <th scope="col">Delete</th>
           </tr>
         </thead>
-        <tr>
           <tbody>
-          <block th:each="user : ${users}">
+          <tr th:each="user : ${users}">
               <td th:text="${user.id}"></td>
               <td th:text="${user.firstName}"></td>
               <td th:text="${user.lastName}"></td>
               <td th:text="${user.age}"></td>
               <td th:text="${user.email}"></td>
-              <td th:text="${user.getAllRoles().replaceFirst('ROLE_', ' ')}"></td>
-              <td>
-                <a class="btn btn-primary" th:text="Edit" th:href="@{admin/updateUser/{userId}(userId=${user.getId()})}"></a>
-              </td>
-              <td>
-                <a class="btn btn-danger" th:text="Delete" th:href="@{admin/deleteUser/{userId}(userId=${user.getId()})}"></a>
-              </td>
-          </tr>
-<!--          <th th:text="${user.}"-->
-<!--          <block th: th:each="role : ${user.roles}">-->
-<!--            <td th:text="${role}">-->
+              <td th:text="${user.getAllRoles()}"></td>
 
-<!--            </td>-->
-<!--          </block>-->
-<!--          -->
-<!--            <td th:each="authority : ${#authentication.getAuthorities()}"-->
-<!--                th:if="${authority.getAuthority().startsWith('ROLE_')}"-->
-<!--                th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}">-->
-            </td>
-          </block>
+              <!--Кнопка редактирования Edit-->
+              <td>
+                <button type="button" class="btn btn-info" data-toggle="modal" th:data-target="${'#modalEdit'+user.id}">Edit</button>
+              </td>
+
+              <!--Кнопка удаления Delete-->
+              <td>
+                <button type="button" class="btn btn-danger" data-toggle="modal"
+                        th:data-target="'#deleteUserModal' + ${user.id}">Delete
+                </button>
+              </td>
+
+
+                <!--Модальное окно -->
+
+            <div class="modal fade" th:id="${'modalEdit'+user.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <form id="formEdit" th:method="PATCH"
+                        action="#"
+                        th:action="@{/admin/updateUser/{id} (id=${user.id})}" th:object="${user}">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Edit user</h5>
+                      <button type="button" class="btn-close" aria-label="Close"
+                              data-dismiss="modal"></button>
+                    </div>
+
+<!--                 Форма id-->
+                    <div class="modal-body text-center">
+                      <div class="form-group required">
+                        <div class="controls">
+                          <p>
+                            <label for="idEditUser">
+                              <b>ID</b>
+                              <input class="form-control" th:type="number"
+                                     th:name="id" id="idEditUser"
+                                     th:value="${user.id}" readonly>
+                            </label>
+                          </p>
+
+<!--                          Форма First name-->
+                          <p>
+                            <label for="editName">
+                              <b>First name</b>
+                              <input class="form-control" th:type="text"
+                              th:name="firsName" id="editName"
+                              th:value="${user.firstName}"
+                                     required
+                                     minlength="1"
+                                     maxlength="50">
+                            </label>
+                          </p>
+
+<!--                          Форма Last name-->
+                          <p>
+                            <label for="editLastName">
+                              <b>Last Name</b>
+                              <input class="form-control" th:type="text"
+                              th:name="lastName" id="editLastName"
+                              th:value="${user.lastName}"
+                                     required
+                                     minlength="1"
+                                     maxlength="50">>
+                            </label>
+                          </p>
+
+<!--                          Форма Age-->
+                          <p>
+                            <label for="editAge">
+                              <b>Age</b>
+                              <input class="form-control" th:type="number"
+                              th:name="age" id="editAge"
+                              th:value="${user.age}" required>
+                            </label>
+                          </p>
+
+<!--                          Форма Email-->
+                          <p>
+                            <label for="editEmail">
+                              <b>Email</b>
+                              <input class="form-control" th:type="email"
+                              th:name="email" id="editEmail"
+                              th:value="${user.email}" required>
+                            </label>
+                          </p>
+
+<!--                          Форма Password-->
+                          <p>
+                            <label for="password">
+                              <b>Password</b>
+                              <input type="password" class="form-control"
+                                     id="password"
+                                     name="password" required minlength="3"
+                                     maxlength="20">
+                            </label>
+                          <p/>
+
+<!--                      Форма ролей-->
+                          <label class="container-fluid col-6"
+                                 for="editUserRoles">
+                            <strong>Role</strong>
+                            <select id="editUserRoles" class="form-select"
+                                    name="roleList" multiple size="2">
+                              <option th:value="${role.getId()}">
+                                <th:block th:text="${role.getRoleName()}">
+                                </th:block>
+                              </option>
+                            </select>
+                          </label>
+
+                        </div>
+                      </div>
+                    </div>
+
+
+
+
+<!--              <td>-->
+<!--                <a class="btn btn-danger" th:text="Delete" th:href="@{admin/deleteUser/{userId}(userId=${user.getId()})}"></a>-->
+<!--              </td>-->
+                  </form>
+                </div>
+              </div>
+            </div>
+          </tr>
         </tbody>
       </table>
     </div>

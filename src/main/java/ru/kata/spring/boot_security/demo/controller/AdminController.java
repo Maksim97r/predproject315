@@ -57,6 +57,7 @@ public class AdminController {
     public String getAdmin(Model model, Principal principal, Role role) {
         User user = userService.findByName(principal.getName());
         model.addAttribute("admin", user);
+
         model.addAttribute("role", role);
         model.addAttribute("users", userService.findAll());
         return "admin";
