@@ -1,11 +1,14 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -21,14 +24,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    private UserRepository userRepository;
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+@Autowired
+    public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User findByName(String username) {
@@ -60,9 +62,12 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public void updateUser(User user) {
-        entityManager.merge(user);
-        entityManager.flush();
+        userRepository.save(user);
     }
+//    @Transactional
+//    public void updateUser(User user) {
+//        userRepository.save(user);
+//    }
 
     public List<User> findAll() {
         return userRepository.findAll();
