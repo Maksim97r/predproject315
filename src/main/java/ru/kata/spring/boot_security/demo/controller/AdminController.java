@@ -64,11 +64,11 @@ public class AdminController {
 //        return "redirect:/admin";
 //    }
 //
-//    @GetMapping("/deleteUser/{id}")
-//    public String deleteUser(@PathVariable Long id) {
-//        userService.deleteUserById(id);
-//        return "redirect:/admin";
-//    }
+    @GetMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return "redirect:/admin";
+    }
 
 //    @GetMapping("/updateUser/{id}")
 //    public String updateUser(@PathVariable Long id, Model model) {

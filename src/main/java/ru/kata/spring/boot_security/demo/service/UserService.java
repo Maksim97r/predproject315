@@ -52,22 +52,14 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean deleteUserById(Long id) {
-        if (userRepository.findById(id).isPresent()) {
-            userRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
 
     @Transactional
     public void updateUser(User user) {
         userRepository.save(user);
     }
-//    @Transactional
-//    public void updateUser(User user) {
-//        userRepository.save(user);
-//    }
 
     public List<User> findAll() {
         return userRepository.findAll();
