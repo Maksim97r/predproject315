@@ -42,28 +42,12 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-//    @GetMapping
-//    public String getAdmin(Model model, Principal principal, Role role) {
-//        User user = userService.findByName(principal.getName());
-//        model.addAttribute("admin", user);
-//
-//        model.addAttribute("role", role);
-//        model.addAttribute("users", userService.findAll());
-//        return "admin";
-//    }
+    @PostMapping("/add")
+    public String createUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
+        return "redirect:/admin";
+    }
 
-//    @GetMapping("/user-create")
-//    public String createNewUser(Model model) {
-//        model.addAttribute("user", new User());
-//        return "user-create";
-//    }
-
-//    @PostMapping("/user-create")
-//    public String createUser(@ModelAttribute("user") User user) {
-//        userService.saveUser(user);
-//        return "redirect:/admin";
-//    }
-//
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUserById(id);
