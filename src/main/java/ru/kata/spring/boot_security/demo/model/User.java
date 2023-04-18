@@ -18,7 +18,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "firstName")
     @NotEmpty(message = "Name cannot be empty!")
     @Size(min = 2, max = 30, message = "Name should be between 2 and 30 character")
     private String firstName;
@@ -147,7 +147,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return firstName;
+        return email;
     }
 
     @Override

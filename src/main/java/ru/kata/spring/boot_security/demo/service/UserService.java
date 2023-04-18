@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public User findByName(String username) {
-        return userRepository.findByFirstName(username);
+        return userRepository.findByEmail(username);
     }
 
     @Transactional
@@ -73,7 +73,7 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(String.format("User '%s' not found", username));
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getFirstName(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
