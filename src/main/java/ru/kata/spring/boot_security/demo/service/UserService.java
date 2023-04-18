@@ -7,16 +7,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -27,40 +23,40 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-@Autowired
+    @Autowired
     public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     public User findByName(String username) {
         return userRepository.findByFirstName(username);
     }
 
+    @Transactional
     public User getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         return user.orElse(new User());
     }
-
-    public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByFirstName(user.getUsername());
-
-        if (userFromDB != null) {
-            return false;
-        };
+    @Transactional
+    public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return true;
     }
 
+    @Transactional
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
 
     @Transactional
     public void updateUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
+    @Transactional
     public List<User> findAll() {
         return userRepository.findAll();
 
