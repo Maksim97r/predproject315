@@ -35,7 +35,7 @@ public class AdminController {
     }
 
     @PostMapping("/editUser/{id}")
-    public String saveUpdateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+    public String saveUpdateUser(@ModelAttribute("user") User user) {
         userService.updateUser(user);
         return "redirect:/admin";
     }
@@ -51,19 +51,4 @@ public class AdminController {
         userService.deleteUserById(id);
         return "redirect:/admin";
     }
-
-//    @GetMapping("/updateUser/{id}")
-//    public String updateUser(@PathVariable Long id, Model model) {
-//        model.addAttribute("update", userService.getUserById(id));
-//        return "updateUser";
-//    }
-
-
-
-
-//    @PostMapping(value = "/edit/{id}")
-//    public String editUsers(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
-//        userService.updateUser(user);
-//        return "redirect:/admin";
-//    }
 }

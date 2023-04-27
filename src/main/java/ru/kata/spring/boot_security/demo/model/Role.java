@@ -1,5 +1,8 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -16,6 +19,8 @@ public class Role implements GrantedAuthority {
     @Column(name = "role")
     private String roleName;
 
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "role_id"),
@@ -23,6 +28,10 @@ public class Role implements GrantedAuthority {
     Set<User> users;
 
     public Role() {
+    }
+
+    public Role(String roleName) {
+        this.roleName = roleName;
     }
 
     public Role(Long id, String roleName) {
