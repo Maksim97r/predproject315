@@ -127,6 +127,7 @@ public class User implements UserDetails {
         for (Role role : roles) {
             allRoles.append(role.getRoleName().replaceFirst("ROLE_", "")).append(" ");
         }
+        allRoles.deleteCharAt(allRoles.length() - 1);
         return allRoles.toString();
     }
 
