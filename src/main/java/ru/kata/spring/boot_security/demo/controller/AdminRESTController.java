@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.util.List;
@@ -18,6 +19,8 @@ public class AdminRESTController {
     public AdminRESTController(UserService userService) {
         this.userService = userService;
     }
+
+
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -40,7 +43,7 @@ public class AdminRESTController {
 
     @PatchMapping("/users")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        userService.saveUser(user);
+        userService.updateUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

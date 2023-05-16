@@ -12,6 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -63,7 +64,7 @@ public class User implements UserDetails {
     @ManyToMany
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -127,7 +128,10 @@ public class User implements UserDetails {
         for (Role role : roles) {
             allRoles.append(role.getRoleName().replaceFirst("ROLE_", "")).append(" ");
         }
-        allRoles.deleteCharAt(allRoles.length() - 1);
+
+        if (!allRoles.isEmpty()) {
+            allRoles.deleteCharAt(allRoles.length() - 1);
+        }
         return allRoles.toString();
     }
 

@@ -1,42 +1,45 @@
-"use script"
+"use strict"
+const host = "http://localhost:8080/admin/users/"
+let user = undefined
 
-function showCurUser() {
-    $.get(`/users`, function (data) {
-
-        let usersBody =
-            "<td>" + data.id + "</td>" +
-            "<td>" + data.firstName + "</td>" +
-            "<td>" + data.lastName + "</td>" +
-            "<td>" + data.age + "</td>" +
-            "<td>" + data.email + "</td>" +
-            "<td>" + replaceUserRoles(data) + "</td>"
-
-        $("#user").html(usersBody);
-    })
+async function getUser() {
+    const data = await $.get('/users')
+    user = data
+    user.roles  = user.roles.map(role => role.roleName.replace("ROLE_", ""));
 }
 
-function curEmail() {
-    $.get(`/users`, function (data) {
-
-        let authUserEmail = data.email;
-        $("#authUserEmail").html(authUserEmail);
-    })
+async function getUserById(id) {
+    let response = await fetch(host + id);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        alert(`Error, ${response.status}`)
+    }
 }
 
-function curRoles() {
-    $.get(`/users`, function (data) {
-        let authUserRole = replaceUserRoles(data);
-        $("#authUserRoles").html(authUserRole);
-    })
+async function getAllUsers() {
+    let response = await fetch(host);
+    if (response.ok) {
+        return await response.json();
+    } else {
+        alert(`Error, ${response.status}`)
+    }
 }
 
-function replaceUserRoles(user) {
-    let role = user.roles.map(role => role.roleName.replace("ROLE_", ""));
-    return role;
+function setUserDataInPage() {
+    let usersBody =
+        "<td>" + user.id + "</td>" +
+        "<td>" + user.firstName + "</td>" +
+        "<td>" + user.lastName + "</td>" +
+        "<td>" + user.age + "</td>" +
+        "<td>" + user.email + "</td>" +
+        "<td>" + user.roles + "</td>"
+
+    $("#user").html(usersBody);
+    $("#authUserEmail").html(user.email);
+    $("#authUserRoles").html(user.roles);
 }
 
 $(document).ready(function () {
-    showCurUser();
-    curEmail();
-    curRoles();
+    getUser().then(setUserDataInPage)
 })
