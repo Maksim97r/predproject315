@@ -20,13 +20,6 @@ public class Role implements GrantedAuthority {
     private String roleName;
 
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    Set<User> users;
-
     public Role() {
     }
 
@@ -45,14 +38,6 @@ public class Role implements GrantedAuthority {
 
     public void setId(Long id) {
         Id = id;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 
     public String getRoleName() {
