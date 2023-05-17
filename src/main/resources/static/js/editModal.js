@@ -30,7 +30,7 @@ function editUser() {
             });
         }
 
-        fetch("http://localhost:8080/admin/users/", {
+        fetch("http://localhost:8080/api/admin/users/", {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

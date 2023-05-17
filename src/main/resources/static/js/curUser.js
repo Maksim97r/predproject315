@@ -1,9 +1,9 @@
 "use strict"
-const host = "http://localhost:8080/admin/users/"
+const host = "http://localhost:8080/api/admin/users/"
 let user = undefined
 
 async function getUser() {
-    const data = await $.get('/users')
+    const data = await $.get('/api/users')
     user = data
     user.roles  = user.roles.map(role => role.roleName.replace("ROLE_", ""));
 }

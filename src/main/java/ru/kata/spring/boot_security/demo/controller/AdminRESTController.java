@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
+
+import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin/users")
 public class AdminRESTController {
 
     private final UserService userService;
@@ -22,34 +24,38 @@ public class AdminRESTController {
 
 
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
+        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         List<User> users = userService.findAll();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return builder.body(users);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
+        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         User user = userService.getUserById(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-
+        return builder.body(user);
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
+        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         userService.saveUser(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return builder.body(user);
     }
 
-    @PatchMapping("/users")
+    @PatchMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
+        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         userService.updateUser(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return builder.body(user);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) {
+        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         userService.deleteUserById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+       return builder.body(HttpStatus.OK);
     }
 }

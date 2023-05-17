@@ -33,7 +33,7 @@ function deleteUser() {
     deleteForm.addEventListener("submit", ev => {
         ev.preventDefault();
         let id = id_delete.value
-        fetch("http://localhost:8080/admin/users/" + id, {
+        fetch("http://localhost:8080/api/admin/users/" + id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

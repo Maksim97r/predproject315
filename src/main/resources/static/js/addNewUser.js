@@ -15,7 +15,7 @@ function createNewUser() {
             });
         }
 
-        fetch("http://localhost:8080/admin/users", {
+        fetch("http://localhost:8080/api/admin/users", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -35,68 +35,3 @@ function createNewUser() {
         });
     });
 }
-//
-// const tabs = document.querySelectorAll('.taba');
-// const tabsContent = document.querySelectorAll('.tabaContent');
-//
-// tabs.forEach((clickedTab) => {
-//     clickedTab.addEventListener('click', async () => {
-//         tabs.forEach((tab) => {
-//             tab.classList.remove('active');
-//         });
-//         clickedTab.classList.add('active');
-//         let tabaId = clickedTab.getAttribute('id');
-//         await activeTabContent(tabaId);
-//     });
-// });
-//
-// async function activeTabContent(tabaId) {
-//     tabsContent.forEach((clickedTabContent) => {
-//         clickedTabContent.classList.contains(tabaId) ?
-//             clickedTabContent.classList.add('active') :
-//             clickedTabContent.classList.remove('active');
-//     })
-// }
-//
-// const form_new = document.getElementById('formForNewUser');
-//
-// async function newUser() {
-//     form_new.addEventListener('submit', addNewUser);
-
-
-
-
-// let form = document.forms["create"];
-//
-// function createNewUser() {
-//     form.addEventListener("submit", newUser => {
-//         newUser.preventDefault();
-//         let roles = [];
-//         for (let i = 0; i , form.roles.options.length; i++) {
-//             if (form.roles.options[i].selected) roles.push({
-//                 id: form.roles.options[i].value,
-//                 role: "ROLE_" + form.roles.options[i].text
-//             });
-//         }
-//
-//         fetch("http://localhost:8080/admin/users", {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 firstName: form.firstName.value,
-//                 lastName: form.lastName.value,
-//                 age: form.age.value,
-//                 email: form.email.value,
-//                 password: form.password.value,
-//                 roles: roles,
-//
-//             })
-//         }).then(() => {
-//             form.reset();
-//             $('#userTable').click();
-//             getTableUser()
-//         });
-//     });
-// }
