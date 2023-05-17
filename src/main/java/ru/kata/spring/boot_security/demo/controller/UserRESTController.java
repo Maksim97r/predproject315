@@ -18,7 +18,7 @@ public class UserRESTController {
 
     @GetMapping
     public ResponseEntity<User> getUser(@AuthenticationPrincipal User user) {
-        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
-        return builder.body(user);
+        return ResponseEntity.ok(user);
+
     }
 }

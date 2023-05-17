@@ -26,36 +26,31 @@ public class AdminRESTController {
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         List<User> users = userService.findAll();
-        return builder.body(users);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) {
-        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         User user = userService.getUserById(id);
-        return builder.body(user);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
-        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         userService.saveUser(user);
-        return builder.body(user);
+        return ResponseEntity.ok(user);
     }
 
     @PatchMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         userService.updateUser(user);
-        return builder.body(user);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) {
-        ResponseEntity.BodyBuilder builder = ResponseEntity.ok();
         userService.deleteUserById(id);
-       return builder.body(HttpStatus.OK);
+       return ResponseEntity.ok().build();
     }
 }
